@@ -7,32 +7,7 @@ import { getPostData } from "../../lib/posts"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
-// export async function getStaticProps({ params }) {
-// 	const postData = await getPostData(params.id)
-// 	return {
-// 		props: {
-// 			postData,
-// 		},
-// 	}
-// }
-
-// export async function getStaticPaths() {
-// 	// const paths = getAllPostIds()
-// 	return {
-// 		paths: [{ params: { id: "ssg-ssr" } }],
-// 		// paths,
-// 		fallback: "blocking",
-// 		// fallback: true,
-// 		// fallback: false,
-// 	}
-// }
-
-export async function getServerSideProps({ params, req }) {
-	console.log(`req.cookies: ${JSON.stringify(req.cookies)}`)
-	// cookie에 따라서 동작을 다르게 할 수도 있음
-	// 왜 가능할까?
-	// 서버 사이드 프롭스는 모든 리퀘스트때마다 화면을 새로 그리기 때문에
-	// 리퀘스트가 존재
+export async function getStaticProps({ params }) {
 	const postData = await getPostData(params.id)
 	return {
 		props: {
@@ -40,6 +15,43 @@ export async function getServerSideProps({ params, req }) {
 		},
 	}
 }
+
+export async function getStaticPaths() {
+	// const paths = getAllPostIds()
+	// [
+	// 	{
+	// 		params: {
+	// 			id: `ssg-ssr`,
+	// 		},
+	// 	},
+	// 	{
+	// 		params: {
+	// 			id: `pre-rendering`,
+	// 		},
+	// 	},
+	// ]
+	return {
+		paths: [{ params: { id: "ssg-ssr" } }],
+		// paths,
+		// fallback: "blocking",
+		// fallback: true,
+		fallback: false,
+	}
+}
+
+// export async function getServerSideProps({ params, req }) {
+// 	console.log(`req.cookies: ${JSON.stringify(req.cookies)}`)
+// 	// cookie에 따라서 동작을 다르게 할 수도 있음
+// 	// 왜 가능할까?
+// 	// 서버 사이드 프롭스는 모든 리퀘스트때마다 화면을 새로 그리기 때문에
+// 	// 리퀘스트가 존재
+// 	const postData = await getPostData(params.id)
+// 	return {
+// 		props: {
+// 			postData,
+// 		},
+// 	}
+// }
 
 export default function Post({ postData }) {
 	// @Note When fallback: true;
